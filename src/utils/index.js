@@ -1,6 +1,10 @@
 const axios = require('axios');
 const glob = require('glob');
 
+axios.defaults.httpsAgent = new https.Agent({
+  rejectUnauthorized: false, // 忽略证书错误
+});
+
 const headers = {
   validmark:
     'aKVEnBbJF9Nip2Wjf4de/fSvA8W3X3iB4L6vT0Y5cxvZbEfEm17udZKUD2qy37dLRY3bzzHLDv+up/Yn3OTo5Q==',
@@ -33,10 +37,6 @@ const request = async (url, params) => {
 };
 
 const post = async (url, data) => {
-  // 创建自定义的 https.Agent
-  const agent = new https.Agent({
-    rejectUnauthorized: false, // 忽略证书错误
-  });
   const res = await axios.post(
     url,
     new URLSearchParams({
@@ -44,8 +44,7 @@ const post = async (url, data) => {
       ...data,
     }),
     {
-      headers,
-      httpsAgent: agent
+      headers
     }
   );
   return res.data;
