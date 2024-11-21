@@ -33,6 +33,10 @@ const request = async (url, params) => {
 };
 
 const post = async (url, data) => {
+  // 创建自定义的 https.Agent
+  const agent = new https.Agent({
+    rejectUnauthorized: false, // 忽略证书错误
+  });
   const res = await axios.post(
     url,
     new URLSearchParams({
@@ -41,6 +45,7 @@ const post = async (url, data) => {
     }),
     {
       headers,
+      httpsAgent: agent
     }
   );
   return res.data;
